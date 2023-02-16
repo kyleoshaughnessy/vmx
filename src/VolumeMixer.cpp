@@ -27,6 +27,9 @@
 
 #define LOCK_GUARD(mutex_var) const std::lock_guard<decltype(mutex_var)> lock(mutex_var)
 
+namespace vmx
+{
+
 /* ==== AudioSesssion Methods ============================================== */
 void
 AudioSession::addObserver
@@ -392,3 +395,5 @@ VolumeMixer::removeDevice
     FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onAudioDeviceRemoved, audioDeviceId);
     m_audioDevices.erase(audioDeviceId);
 }
+
+} // namespace vmx

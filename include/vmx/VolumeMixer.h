@@ -7,6 +7,9 @@
 #include <string>
 #include <vector>
 
+namespace vmx
+{
+
 /* ==== Classes ============================================================ */
 class AudioSession
 {
@@ -149,3 +152,5 @@ private: /* Members */
     std::vector<std::weak_ptr<Observer>> m_observers;
     std::map<std::string /*audioDeviceId*/, std::shared_ptr<AudioDevice>> m_audioDevices;
 };
+
+} // namespace vmx

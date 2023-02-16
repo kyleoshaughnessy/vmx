@@ -27,7 +27,7 @@ static std::string percentStr(float value)
 FTXUIAudioSessionObserver::FTXUIAudioSessionObserver
 (
     const std::string &sessionId,
-    std::weak_ptr<AudioSession> pAudioSession,
+    std::weak_ptr<vmx::AudioSession> pAudioSession,
     std::function<void(void)> updateScreenFunc
 )
   : m_sessionId(sessionId),
@@ -108,7 +108,7 @@ FTXUIAudioSessionObserver::onIconPathChange
 void
 FTXUIAudioSessionObserver::onStateChange
 (
-    AudioSession::State state
+    vmx::AudioSession::State state
 )
 {
     {
@@ -177,7 +177,7 @@ FTXUIAudioSessionObserver::onPeakSample
 FTXUIAudioDeviceObserver::FTXUIAudioDeviceObserver
 (
     const std::string &deviceId,
-    std::weak_ptr<AudioDevice> pAudioDevice,
+    std::weak_ptr<vmx::AudioDevice> pAudioDevice,
     std::function<void(void)> updateScreenFunc
 )
   : m_deviceId(deviceId),
@@ -290,7 +290,7 @@ void FTXUIAudioDeviceObserver::onIconPathChange
 
 void FTXUIAudioDeviceObserver::onStateChange
 (
-    AudioDevice::State state
+    vmx::AudioDevice::State state
 )
 {
     {
@@ -365,7 +365,7 @@ void FTXUIAudioDeviceObserver::onPeakSample
 
 void FTXUIAudioDeviceObserver::onAudioSessionAdded
 (
-    const std::string &audioSessionId, std::weak_ptr<AudioSession> pAudioSession
+    const std::string &audioSessionId, std::weak_ptr<vmx::AudioSession> pAudioSession
 )
 {
     if (auto ptr = pAudioSession.lock())
@@ -425,7 +425,7 @@ void
 FTXUIVolumeMixerObserver::onAudioDeviceAdded
 (
     const std::string &audioDeviceId,
-    std::weak_ptr<AudioDevice> pAudioDevice
+    std::weak_ptr<vmx::AudioDevice> pAudioDevice
 )
 {
     if (auto ptr = pAudioDevice.lock())

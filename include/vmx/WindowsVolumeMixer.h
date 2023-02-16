@@ -23,6 +23,9 @@
 #include <endpointvolume.h>
 #include <functiondiscoverykeys_devpkey.h>
 
+namespace vmx
+{
+
 /* ==== Helper Classes ===================================================== */
 template <class T>
 class QueuedWorkThread
@@ -413,3 +416,5 @@ private: /* Members */
     LONG m_ref;
     WindowsVolumeMixer &m_parent;
 };
+
+} // namespace vmx

@@ -28,8 +28,12 @@
 /* ==== Forward Declarations =============================================== */
 static std::string utf8_encode(const std::wstring &wstr);
 static std::string windowName(unsigned int processId, bool bSystemsSoundSession);
-static AudioSession::State from(AudioSessionState state);
-static AudioDevice::State from(DWORD state);
+static vmx::AudioSession::State from(AudioSessionState state);
+static vmx::AudioDevice::State from(DWORD state);
+
+
+namespace vmx
+{
 
 /* ==== WindowsAudioSession Class ========================================== */
 WindowsAudioSession::WindowsAudioSession
@@ -1136,6 +1140,8 @@ CMMNotificationClient::OnPropertyValueChanged
     return S_OK;
 }
 
+} // namespace vmx
+
 /* ==== Static Helper Functions ============================================ */
 static std::string
 utf8_encode
@@ -1215,7 +1221,7 @@ windowName
 }
 
 
-static AudioSession::State
+static vmx::AudioSession::State
 from
 (
     AudioSessionState state
@@ -1223,14 +1229,14 @@ from
 {
     switch (state)
     {
-        case AudioSessionStateInactive: return AudioSession::State::Inactive;
-        case AudioSessionStateActive:   return AudioSession::State::Active;
-        case AudioSessionStateExpired:  return AudioSession::State::Expired;
-        default:                        return AudioSession::State::Unknown;
+        case AudioSessionStateInactive: return vmx::AudioSession::State::Inactive;
+        case AudioSessionStateActive:   return vmx::AudioSession::State::Active;
+        case AudioSessionStateExpired:  return vmx::AudioSession::State::Expired;
+        default:                        return vmx::AudioSession::State::Unknown;
     }
 }
 
-static AudioDevice::State
+static vmx::AudioDevice::State
 from
 (
     DWORD state
@@ -1238,10 +1244,10 @@ from
 {
     switch (state)
     {
-        case DEVICE_STATE_ACTIVE:       return AudioDevice::State::Active;
-        case DEVICE_STATE_DISABLED:     return AudioDevice::State::Disabled;
-        case DEVICE_STATE_NOTPRESENT:   return AudioDevice::State::NotPresent;
-        case DEVICE_STATE_UNPLUGGED:    return AudioDevice::State::Unplugged;
-        default:                        return AudioDevice::State::Unknown;
+        case DEVICE_STATE_ACTIVE:       return vmx::AudioDevice::State::Active;
+        case DEVICE_STATE_DISABLED:     return vmx::AudioDevice::State::Disabled;
+        case DEVICE_STATE_NOTPRESENT:   return vmx::AudioDevice::State::NotPresent;
+        case DEVICE_STATE_UNPLUGGED:    return vmx::AudioDevice::State::Unplugged;
+        default:                        return vmx::AudioDevice::State::Unknown;
     }
 }

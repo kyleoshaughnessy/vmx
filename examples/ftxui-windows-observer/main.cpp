@@ -31,7 +31,7 @@ throwableMain
 
     auto screen = ftxui::ScreenInteractive::Fullscreen();
     auto obs = std::make_shared<FTXUIVolumeMixerObserver>(screen);
-    WindowsVolumeMixer mixer{};
+    vmx::WindowsVolumeMixer mixer{};
     mixer.addObserver(obs, true);
     mixer.setPeakSamplingPeriod(std::chrono::milliseconds(peakSamplingPeriodMillis));
     screen.Loop(obs->getRenderer());
