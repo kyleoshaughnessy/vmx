@@ -3,6 +3,7 @@
 
 /* ==== Standard Library Includes ========================================== */
 #include <algorithm>
+#include <thread>
 
 /* ==== Macros ============================================================= */
 // TODO: Investigate *not* using a detached thread here for every update...
@@ -92,7 +93,7 @@ AudioSession::updateName
     LOCK_GUARD(m_mutex);
     if (m_name == name) return;
     m_name = name;
-    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onNameChange, m_name);
+    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onNameChange, name);
 }
 
 void
@@ -104,7 +105,7 @@ AudioSession::updateIconPath
     LOCK_GUARD(m_mutex);
     if (m_iconPath == iconPath) return;
     m_iconPath = iconPath;
-    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onIconPathChange, m_iconPath);
+    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onIconPathChange, iconPath);
 }
 
 void
@@ -116,7 +117,7 @@ AudioSession::updateState
     LOCK_GUARD(m_mutex);
     if (m_state == state) return;
     m_state = state;
-    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onStateChange, m_state);
+    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onStateChange, state);
 }
 
 void
@@ -128,7 +129,7 @@ AudioSession::updateVolume
     LOCK_GUARD(m_mutex);
     if (m_volume == volume) return;
     m_volume = volume;
-    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onVolumeChange, m_volume);
+    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onVolumeChange, volume);
 }
 
 void
@@ -140,7 +141,7 @@ AudioSession::updateMute
     LOCK_GUARD(m_mutex);
     if (m_bMuted == bMuted) return;
     m_bMuted = bMuted;
-    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onMuteChange, m_bMuted);
+    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onMuteChange, bMuted);
 }
 
 void
@@ -152,7 +153,7 @@ AudioSession::updatePeakSample
     LOCK_GUARD(m_mutex);
     if (m_peak == peak) return;
     m_peak = peak;
-    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onPeakSample, m_peak);
+    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onPeakSample, peak);
 }
 
 /* ==== AudioDevice Methods ================================================ */
@@ -223,7 +224,7 @@ AudioDevice::updateName
     LOCK_GUARD(m_mutex);
     if (m_name == name) return;
     m_name = name;
-    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onNameChange, m_name);
+    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onNameChange, name);
 }
 
 void
@@ -235,7 +236,7 @@ AudioDevice::updateIconPath
     LOCK_GUARD(m_mutex);
     if (m_iconPath == iconPath) return;
     m_iconPath = iconPath;
-    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onIconPathChange, m_iconPath);
+    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onIconPathChange, iconPath);
 
 }
 
@@ -248,7 +249,7 @@ AudioDevice::updateState
     LOCK_GUARD(m_mutex);
     if (m_state == state) return;
     m_state = state;
-    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onStateChange, m_state);
+    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onStateChange, state);
 }
 
 void
@@ -260,7 +261,7 @@ AudioDevice::updateDefault
     LOCK_GUARD(m_mutex);
     if (m_bIsDefaultDevice == bIsDefaultDevice) return;
     m_bIsDefaultDevice = bIsDefaultDevice;
-    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onDefaultChange, m_bIsDefaultDevice);
+    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onDefaultChange, bIsDefaultDevice);
 }
 
 void
@@ -272,7 +273,7 @@ AudioDevice::updateVolume
     LOCK_GUARD(m_mutex);
     if (m_volume == volume) return;
     m_volume = volume;
-    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onVolumeChange, m_volume);
+    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onVolumeChange, volume);
 }
 
 void
@@ -284,7 +285,7 @@ AudioDevice::updateMute
     LOCK_GUARD(m_mutex);
     if (m_bMuted == bMuted) return;
     m_bMuted = bMuted;
-    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onMuteChange, m_bMuted);
+    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onMuteChange, bMuted);
 }
 
 void
@@ -296,7 +297,7 @@ AudioDevice::updatePeakSample
     LOCK_GUARD(m_mutex);
     if (m_peak == peak) return;
     m_peak = peak;
-    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onPeakSample, m_peak);
+    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onPeakSample, peak);
 }
 
 void
@@ -307,8 +308,8 @@ AudioDevice::addSession
 )
 {
     LOCK_GUARD(m_mutex);
-    m_audioSessions[audioSessionId] = std::move(pAudioSession);
-    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onAudioSessionAdded, audioSessionId, m_audioSessions[audioSessionId]);
+    m_audioSessions[audioSessionId] = pAudioSession;
+    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onAudioSessionAdded, audioSessionId, pAudioSession);
 }
 
 void
@@ -381,8 +382,8 @@ VolumeMixer::addDevice
 )
 {
     LOCK_GUARD(m_mutex);
-    m_audioDevices[audioDeviceId] = std::move(pAudioDevice);
-    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onAudioDeviceAdded, audioDeviceId, m_audioDevices[audioDeviceId]);
+    m_audioDevices[audioDeviceId] = pAudioDevice;
+    FOR_EACH_OBSERVER_CALL_METHOD(m_observers, onAudioDeviceAdded, audioDeviceId, pAudioDevice);
 }
 
 void

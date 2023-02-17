@@ -1,4 +1,4 @@
-if($<NOT:$<PLATFORM_ID:Windows>>)
+if(NOT WIN32)
   return()
 endif()
 
@@ -22,7 +22,6 @@ FetchContent_Declare(
   GIT_REPOSITORY https://github.com/CLIUtils/CLI11
   GIT_TAG        v2.3.2
 )
-set(CLI11_PRECOMPILED ON)
 FetchContent_MakeAvailable(cli11)
 # ------------------------------------------------------------------------------
 
