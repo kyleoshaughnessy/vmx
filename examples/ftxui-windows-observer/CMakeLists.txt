@@ -5,9 +5,10 @@ endif()
 include(FetchContent)
 
 # --- Fetch FTXUI --------------------------------------------------------------
-FetchContent_Declare(ftxui
+FetchContent_Declare(
+  ftxui
   GIT_REPOSITORY https://github.com/ArthurSonzogni/ftxui
-  GIT_TAG        v3.0.0
+  GIT_TAG        v5.0.0
 )
 FetchContent_GetProperties(ftxui)
 if(NOT ftxui_POPULATED)
@@ -26,9 +27,10 @@ FetchContent_MakeAvailable(cli11)
 # ------------------------------------------------------------------------------
 
 # --- Fetch fmt ----------------------------------------------------------------
-FetchContent_Declare(fmt
+FetchContent_Declare(
+  fmt
   GIT_REPOSITORY https://github.com/fmtlib/fmt
-  GIT_TAG        9.1.0
+  GIT_TAG        10.1.1
 )
 FetchContent_MakeAvailable(fmt)
 # ------------------------------------------------------------------------------
