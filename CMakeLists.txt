@@ -7,28 +7,22 @@ project(
     LANGUAGES CXX
 )
 
-option(VMX_BUILD_EXAMPLES "Set to ON to build examples" ON)
+add_subdirectory(src)
 
-add_library(vmx-core
-    src/VolumeMixer.cpp
-    include/vmx/VolumeMixer.h
-    $<$<PLATFORM_ID:Windows>:
-       src/WindowsVolumeMixer.cpp
-       include/vmx/WindowsVolumeMixer.h
-    >
-)
+if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+    option(VMX_BUILD_EXAMPLES    "whether or not examples should be build" ON)
+    option(VMX_BUILD_SRC_PACKAGE "whether or not the source package should be built" ON)
 
-set_target_properties(vmx-core PROPERTIES VERSION ${PROJECT_VERSION})
-set_target_properties(vmx-core PROPERTIES CXX_STANDARD 20 CXX_EXTENSIONS OFF) # required for jthread in WindowsVolumeMixer
+    if(VMX_BUILD_SRC_PACKAGE)
+        set(package_files include/ src/ CMakeLists.txt LICENSE)
+        add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/vmx-src.zip
+            COMMAND ${CMAKE_COMMAND} -E tar c ${CMAKE_CURRENT_BINARY_DIR}/vmx-src.zip --format=zip -- ${package_files}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            DEPENDS ${package_files})
+        add_custom_target(vmx_src_package DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/vmx-src.zip)
+    endif()
 
-target_include_directories(vmx-core PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>)
-target_include_directories(vmx-core PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
-target_include_directories(vmx-core SYSTEM INTERFACE $<INSTALL_INTERFACE:include>)
-
-if (MSVC)
-    target_compile_options(vmx-core PRIVATE /W4 /WX)
-else()
-    target_compile_options(vmx-core PRIVATE -Wall -Wextra -Wpedantic -Werror -Wmissing-declarations -Wdeprecated -Wshadow)
+    if(VMX_BUILD_EXAMPLES)
+        add_subdirectory(examples)
+    endif()
 endif()
-
-add_subdirectory(examples)
