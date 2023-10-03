@@ -22,16 +22,14 @@ vmx works out of the box with CMake's FetchContent.
 ```cmake
 include(FetchContent)
 
-FetchContent_Declare(vmx
+FetchContent_Declare(
+  vmx
   GIT_REPOSITORY https://github.com/kyleoshaughnessy/vmx
-  GIT_TAG some_tag
+  GIT_TAG        v0.0.1-alpha2
 )
-
-FetchContent_GetProperties(vmx)
-if(NOT vmx_POPULATED)
-  FetchContent_Populate(vmx)
-  add_subdirectory(${vmx_SOURCE_DIR} ${vmx_BINARY_DIR} EXCLUDE_FROM_ALL)
-endif()
+FetchContent_MakeAvailable(vmx)
 ```
+
+From here, you can simply link to vmx::core via `target_link_libraries`.
 
 In the future, pre-built binaries may be added to tagged releases.
