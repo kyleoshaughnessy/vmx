@@ -47,7 +47,7 @@ target_link_libraries(vmx_example_ftxui_windows_observer
   PRIVATE ftxui::screen
   PRIVATE ftxui::dom
   PRIVATE ftxui::component
-  PRIVATE vmx-core
+  PRIVATE vmx::core
 )
 
 set_target_properties(vmx_example_ftxui_windows_observer PROPERTIES CXX_STANDARD 20)
