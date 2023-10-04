@@ -25,7 +25,7 @@ include(FetchContent)
 FetchContent_Declare(
   vmx
   GIT_REPOSITORY https://github.com/kyleoshaughnessy/vmx
-  GIT_TAG        v0.0.2-alpha2
+  GIT_TAG        v0.0.2-alpha
 )
 FetchContent_MakeAvailable(vmx)
 ```
