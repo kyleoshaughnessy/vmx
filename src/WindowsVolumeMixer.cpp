@@ -506,24 +506,39 @@ WindowsAudioDevice::killSession
 )
 {
     LOCK_GUARD(m_mutex);
-    // Delete any CAudioSessionLifetimeObserver that is already marked for deletion
-    std::erase_if(m_audioSessionLifetimeObservers, [](const auto& item) {
-        auto const& [key, value] = item;
-        return value->isReadyForDeletion();
-    });
 
-    // Delete the session associated with the id
-    m_audioSessionsMirror.erase(sessionId);
-    removeSession(sessionId);
+    try
+    {
+        // Delete any CAudioSessionLifetimeObserver that is already marked for deletion
+        std::erase_if(m_audioSessionLifetimeObservers, [](const auto& item) {
+            auto const& [key, value] = item;
+            return value->isReadyForDeletion();
+        });
 
+        // Delete the session associated with the id
+        m_audioSessionsMirror.erase(sessionId);
+        removeSession(sessionId);
 
-    //
-    // Mark the CAudioSessionLifetimeObserver for deletion.
-    // This is not deleted above in order to allow the observer to go dormant
-    // (race condition between CAudioSessionLifetimeObserver::OnStateChanged()
-    // and WindowsAudioDevice::sessionKiller())
-    //
-    m_audioSessionLifetimeObservers.at(sessionId)->markForDeletion();
+        //
+        // Mark the CAudioSessionLifetimeObserver for deletion.
+        // This is not deleted above in order to allow the observer to go dormant
+        // (race condition between CAudioSessionLifetimeObserver::OnStateChanged()
+        // and WindowsAudioDevice::sessionKiller())
+        //
+        m_audioSessionLifetimeObservers.at(sessionId)->markForDeletion();
+    }
+    catch(std::exception e)
+    {
+        // TODO Something with this in nice way
+        // printf("Exception caught: %s\n", e.what());
+        std::terminate();
+    }
+    catch(...)
+    {
+        // TODO something with this in a nice way
+        // printf("Unknown exception type caught. %s:%d\n", __FILE__, __LINE__);
+        std::terminate();
+    }
 }
 
 void
@@ -950,12 +965,14 @@ WindowsVolumeMixer::peakSample()
     catch(std::exception e)
     {
         // TODO Something with this in nice way
-        // fmt::print("{}\n", e.what());
+        // printf("Exception caught: %s\n", e.what());
+        std::terminate();
     }
     catch(...)
     {
         // TODO something with this in a nice way
-        // fmt::print("Unknown exception type caught. {}:{}\n", __FILE__, __LINE__);
+        // printf("Unknown exception type caught. %s:%d\n", __FILE__, __LINE__);
+        std::terminate();
     }
 }
 

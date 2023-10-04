@@ -77,6 +77,7 @@ FTXUIAudioSessionObserver::~FTXUIAudioSessionObserver()
     m_renderer->DetachAllChildren();
     m_component->Detach();
     m_component->DetachAllChildren();
+    m_updateScreenFunc();
 }
 
 void
@@ -262,6 +263,7 @@ FTXUIAudioDeviceObserver::~FTXUIAudioDeviceObserver()
     m_allComponents->DetachAllChildren();
     m_menuEntry->Detach();
     m_menuEntry->DetachAllChildren();
+    m_updateScreenFunc();
 }
 
 void FTXUIAudioDeviceObserver::onNameChange
